@@ -306,3 +306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98ae8b6b6fafad48bdf1d7eabdff23e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bronzecubePrefab: {fileID: 6972502363709420812, guid: c05bcc65d7dddbc4ea6d177155f88f74,
+    type: 3}
+  silvercubePrefab: {fileID: 1741622049213394267, guid: 5de29134774962448863d90abb006776,
+    type: 3}
