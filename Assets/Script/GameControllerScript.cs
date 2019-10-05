@@ -13,11 +13,14 @@ public class GameControllerScript : MonoBehaviour
 
     public GameObject bronzecubePrefab;
     public GameObject silvercubePrefab;
+    public GameObject goldcubePrefab;
 
     int xPos;
+    int yPos;
 
-    int bronze, bronzeSupply;
-    int silver, silverSupply;
+    int goldSupply;
+    int bronzeSupply;
+    int silverSupply;
     float mineNow;
     float miningSpeed;
 
@@ -26,12 +29,12 @@ public class GameControllerScript : MonoBehaviour
     {
 
         xPos = 2;
+        yPos = 1;
 
-        bronze = 0;
-        silver = 0;
-        bronzeSupply = 3;
-        silverSupply = 2;
-        miningSpeed = 3;
+        goldSupply = 0;
+        bronzeSupply = 0;
+        silverSupply = 0;
+        miningSpeed = 1;
         mineNow = miningSpeed;
 
     }
@@ -40,36 +43,52 @@ public class GameControllerScript : MonoBehaviour
     {
  
         Instantiate(cubePrefab, cubePosition, Quaternion.identity);
-        
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Time.time > mineNow && silverSupply != 0)
+        if (Time.time > mineNow)
         {
             mineNow += miningSpeed;
-            if (bronzeSupply > 0)
-            {
-                bronzeSupply--;
-                bronze++;
+
+           if (bronzeSupply < 4)
+           {
+                bronzeSupply++;
 
                 CreateCube(cubePosition, bronzecubePrefab);
                 cubePosition = new Vector3(xPos, 0, 0);
                 xPos += 2;
-            }
-            else if (silverSupply > 0)
-            {
 
-                silverSupply--;
-                silver++;
+           }
+           // trying to make more cubes appear on screen
+           // so i made the int yPos to change the position on where it appears
+           // finding it difficult to make them appear on top of the bronze
+           else if (bronzeSupply >= 4)
+           {
+
+                silverSupply++;
+                
 
                 CreateCube(cubePosition, silvercubePrefab);
+                cubePosition = new Vector3(xPos, yPos, 0);
+                xPos += 2; yPos += 1; 
+           }
+           // I spent time working on how to construct the gold
+           // I eventually got it, all i was missing was the ELSE
+           // I used the bronze and silver statements as the structure
+           else if (bronzeSupply == 2 && silverSupply == 2)
+           {
+                goldSupply++;
+
+                CreateCube(cubePosition, goldcubePrefab);
                 cubePosition = new Vector3(xPos, 0, 0);
                 xPos += 2;
-            }
-            print("Bronze: " + bronze + "...Silver" + silver);
+           }
+           // i changed it SUPPLY because i wasnt using the other variables
+           // bronze silver and gold int
+           print("Bronze: " + bronzeSupply + "...Silver" + silverSupply + "Gold" + goldSupply);
 
         }
 

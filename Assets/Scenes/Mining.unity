@@ -310,3 +310,5 @@ MonoBehaviour:
     type: 3}
   silvercubePrefab: {fileID: 1741622049213394267, guid: 5de29134774962448863d90abb006776,
     type: 3}
+  goldcubePrefab: {fileID: 8847162891431406510, guid: 620b673f89c1d3a4a97b0828ce21b9b5,
+    type: 3}
