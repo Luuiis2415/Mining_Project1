@@ -4,23 +4,21 @@ using UnityEngine;
 
 public class GameControllerScript : MonoBehaviour
 {
-    // make it public so things outside GameController can mess with this
-    // also if you make it private those outside GameController cant access
-
-    //int notification = 0;
-
     Vector3 cubePosition;
+    public GameObject cubePrefab;
+    Ore recentOre;
+    GameObject myCube;
 
-    public GameObject bronzecubePrefab;
-    public GameObject silvercubePrefab;
-    public GameObject goldcubePrefab;
+    float xPos;
+    float yPos;
 
-    int xPos;
-    int yPos;
+    //static means single variable that we are keeping track of called bronzeSupply etc
+    
+    public static int goldSupply;
+    public static int bronzeSupply;
+    public static int silverSupply;
+    public static int points, bronzePoints, silverPoints, goldPoints;
 
-    int goldSupply;
-    int bronzeSupply;
-    int silverSupply;
     float mineNow;
     float miningSpeed;
 
@@ -28,22 +26,81 @@ public class GameControllerScript : MonoBehaviour
     void Start()
     {
 
-        xPos = 2;
-        yPos = 1;
+        xPos = -5;
+        yPos = -4;
 
         goldSupply = 0;
         bronzeSupply = 0;
         silverSupply = 0;
-        miningSpeed = 1;
+        bronzePoints = 1;
+        silverPoints = 10;
+        goldPoints = 100;
+
+        miningSpeed = 3;
         mineNow = miningSpeed;
+         
+        recentOre = Ore.Bronze;
 
     }
 
-    void CreateCube(Vector3 cubePosition, GameObject cubePrefab)
+    // I can create a method in GameController rather than cubecontroller because
+    // the gamecontroller should be keeping track of and modifying the points
+    public static void ProcessClickedCube(Ore ore)
     {
- 
-        Instantiate(cubePrefab, cubePosition, Quaternion.identity);
+        if (ore == Ore.Bronze)
+        {
 
+            bronzeSupply--;
+            points += bronzePoints;
+
+        }
+        else if (ore == Ore.Silver)
+        {
+
+            silverSupply--;
+            points += silverPoints;
+
+        }
+        else
+        {
+
+            goldSupply--;
+            points += goldPoints;
+
+        }
+    }
+
+    void CreateCube(Ore ore)
+    {
+        Color cubeColor;
+
+        if(ore == Ore.Bronze)
+        {
+            cubeColor = Color.red;
+        }
+        else if(ore == Ore.Silver)
+        {
+            cubeColor = Color.white;
+        }
+        else
+        {
+            cubeColor = Color.yellow;
+        }
+
+        cubePosition = new Vector3(xPos, yPos, 0);
+        myCube = Instantiate(cubePrefab, cubePosition, Quaternion.identity);
+        myCube.GetComponent<Renderer>().material.color = cubeColor;
+        myCube.GetComponent<CubeController>().myOre = ore;
+
+        // i got these positions from the video and that helps create
+        // more cubes on my screen
+        xPos += 2;
+        if(xPos > 6)
+        {
+            xPos = -5;
+            yPos += 2;
+        }
+        recentOre = ore;
     }
 
     // Update is called once per frame
@@ -53,53 +110,40 @@ public class GameControllerScript : MonoBehaviour
         {
             mineNow += miningSpeed;
 
-           if (bronzeSupply < 4)
-           {
+            // at first i did not know how to call the method
+            // when i saw the video i finally understood that you have to type 
+            // everything inside the method and then call on it right here
+            if (bronzeSupply == 2 && silverSupply == 2 && recentOre != Ore.Gold )
+            {
+                goldSupply++;
+                CreateCube(Ore.Gold);
+                
+            }
+
+            else if (bronzeSupply < 4)
+            {
+
                 bronzeSupply++;
+                CreateCube(Ore.Bronze);
 
-                CreateCube(cubePosition, bronzecubePrefab);
-                cubePosition = new Vector3(xPos, 0, 0);
-                xPos += 2;
-
-           }
-           // trying to make more cubes appear on screen
-           // so i made the int yPos to change the position on where it appears
-           // finding it difficult to make them appear on top of the bronze
+            }
+      
            else if (bronzeSupply >= 4)
            {
 
                 silverSupply++;
-                
+                CreateCube(Ore.Silver);
 
-                CreateCube(cubePosition, silvercubePrefab);
-                cubePosition = new Vector3(xPos, yPos, 0);
-                xPos += 2; yPos += 1; 
-           }
-           // I spent time working on how to construct the gold
-           // I eventually got it, all i was missing was the ELSE
-           // I used the bronze and silver statements as the structure
-           else if (bronzeSupply == 2 && silverSupply == 2)
-           {
-                goldSupply++;
-
-                CreateCube(cubePosition, goldcubePrefab);
-                cubePosition = new Vector3(xPos, 0, 0);
-                xPos += 2;
            }
            // i changed it SUPPLY because i wasnt using the other variables
            // bronze silver and gold int
-           print("Bronze: " + bronzeSupply + "...Silver" + silverSupply + "Gold" + goldSupply);
 
+            // i dont need to print it because we see the cubes appear on screen
+            // i can delete it but i will make it a comment
+           // print("Bronze: " + bronzeSupply + "...Silver" + silverSupply + "Gold" + goldSupply);
+
+           print("Total Points: " + points);
         }
-
-
-        //if (Time.time > 3 && notification == 0)
-        {
-            //print("It's been three seconds");
-            //notification = 1;
-
-        }
-       // print(Time.time);
 
     }
 }

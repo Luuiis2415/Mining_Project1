@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2620073383709200270}
   - component: {fileID: 3267698068853438790}
   - component: {fileID: 7336708228795799368}
+  - component: {fileID: 114546242672619020}
   m_Layer: 0
   m_Name: bronzecube
   m_TagString: Untagged
@@ -91,3 +92,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114546242672619020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6972502363709420812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 919b058ba123b194980a142db14eb305, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
